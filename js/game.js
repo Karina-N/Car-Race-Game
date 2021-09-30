@@ -19,7 +19,6 @@ class Game {
     // }, 6000);
 
     // setInterval(() => {
-    //   //@todo: instead of updating one, we need to update all the obstacles we have.
     //   this.obstaclesArray.forEach((elm) => {
     //     elm.moveDown();
     //     elm.draw();
@@ -31,10 +30,20 @@ class Game {
       // update timer
       this.currentTime++;
 
-      // update positions
-      this.obstaclesArray.forEach((elm) => {
-        elm.moveDown();
-        elm.draw();
+      this.obstaclesArray.forEach((obstacle) => {
+        // update positions
+        obstacle.moveDown();
+        obstacle.draw();
+
+        if (obstacle.y === 100) {
+          // collision detection
+          if (this.car.x < obstacle.x + obstacle.width && this.car.x + this.car.width > obstacle.x) {
+            alert("game over!");
+          }
+        } else if (obstacle.y > 100) {
+          obstacle.remove();
+          this.obstaclesArray.shift();
+        }
       });
 
       // create new obstacles
@@ -43,17 +52,17 @@ class Game {
         this.obstaclesArray.push(newObstacle);
         newObstacle.create();
       }
-    }, 200);
+    }, 400);
   }
 
   addEventListeners() {
     document.addEventListener("keydown", (event) => {
       if (event.key === "ArrowLeft") {
         this.car.moveLeft();
-        this.car.draw(); //@todo
+        this.car.draw();
       } else if (event.key === "ArrowRight") {
         this.car.moveRight();
-        this.car.draw(); //@todo
+        this.car.draw();
       }
     });
   }
@@ -62,12 +71,15 @@ class Game {
 class Thing {
   constructor() {
     this.domElm = null;
+    this.gameElm = document.getElementById("game");
   }
   create() {
     this.domElm = document.createElement("div");
     this.domElm.className = this.className;
-    const gameElm = document.getElementById("game");
-    gameElm.appendChild(this.domElm);
+    this.gameElm.appendChild(this.domElm);
+  }
+  remove() {
+    this.gameElm.removeChild(this.domElm);
   }
   draw() {
     this.domElm.style.width = this.width + "%";
@@ -84,13 +96,18 @@ class Car extends Thing {
     this.y = 100;
     this.width = 10;
     this.height = 20;
+    this.movementSpeed = 3;
     this.className = "car";
   }
   moveLeft() {
-    this.x--;
+    if (this.x > 0) {
+      this.x--;
+    }
   }
   moveRight() {
-    this.x++;
+    if (this.x + this.width < 100) {
+      this.x++;
+    }
   }
 }
 

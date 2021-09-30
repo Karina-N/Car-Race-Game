@@ -15,9 +15,11 @@ body {
 .car {
   position: absolute;
   background-color: orange;
+  transition: 0.1s linear;
 }
 
 .obstacle {
   position: absolute;
   background-color: purple;
+  /* transition: all 1s linear; */
 }
