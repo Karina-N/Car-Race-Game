@@ -4,6 +4,7 @@ body {
 }
 
 #game {
+  background-color: rgb(201, 201, 200);
   position: relative;
   width: 60vw;
   height: 80vh;
@@ -14,4 +15,9 @@ body {
 .car {
   position: absolute;
   background-color: orange;
+}
+
+.obstacle {
+  position: absolute;
+  background-color: purple;
 }
